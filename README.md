@@ -111,10 +111,36 @@ When choosing for the hybrid approach it's important to understand the following
 
 Azure AD comes with [privileged Identity Management](https://docs.microsoft.com/en-us/azure/active-directory/privileged-identity-management/pim-configure). This allows you to assign admin permissions for O365 or Azure in an on-demand/just int ime manner. As a requirement for PIM you need valid Azure AD Premium P2 licenses for the users using this feature. Given that in B2B invite model you're inviting your staff members in each customer tenant you'd need to apply PIM in each customer tenant. From the CSP Partner point of view this isn't a recommended approach.
 
-A CSP Partner could decide to build something leveraging the REST API's of both the Partner Center and Azure AD. This solution could consist of creating a service principal in each customer AAD tenant at customer onboarding time. This principal would be delegated the right to invite people into the directory.
+### Automation needs for the hybrid solution
 
-Next to that an application could be built that allows a staff member to enumerate the customers that member is entitled to work with. Once that list is retrieved a customer could be selected and the staff member could be invited "just in time" in the customer AAD tenant. A cleanup process could run on a regular interval to remove the invited users again.
+The hybrid solution addresses the majority of the challenges present in the CSP identity model, but at the same time it requires the partner to automate several tasks to make this approach manageable. This automation can either be built using REST API and/or PowerShell.
 
+Here we outline the flow and the different steps that need to be automated:
+
+|Task|Automated/Manual|
+|---|---|
+|Agent role logs into Partner Center and creates a new customer|Manual|
+|New principal is created in customer AAD with the guest inviter role|Automated|
+|Agent creates new Azure subscription from Partner Center|Manual|
+|Assign subscription owner role to the guest inviter principal|Automated|   |
+
+After these tasks are completed, we have the basic plumbing in place that will allow us to invite B2B users to the customer subscription. From this point on, it is up to the partner to select the approach that better adapts to their needs. 
+
+Here we offer two implementation options but many others are possible.
+
+#### Implementation Option #1 - Just in time invitation
+
+In this approach, each individual user would request access to the customer subscription just in time and for a limited number of hours after which the invitation would be removed. Flow:
+
+* When user needs access, opens application, selects customer that needs assistance and number of hours
+* Automation takes care of inviting the user and adding required permissions
+* When the time expires, guest user is removed from customer AAD
+
+#### Implementation Option #2 - Group synchronization
+
+In this variant, the patner defines AAD groups inside its own tenant with the users that need access to customer subscriptions. These groups can separate users by function and/or by customer. For example, a partner could have the following groups created in his own tenant for its customer Contoso: Contoso_Readers, Contoso_Contributors, Contoso_BackupOperators, etc. These groups would then be replicated to Contoso's tenant so they can be applied the required role.
+
+Due to the fact that the groups are separately maintained for each tenant (partner and customers), there needs to be some automation in place to check group membership periodically and keep/remove the user in the customer tenants. The group and role synchronization mechanism is explained in more detail in [this article](https://blogs.technet.microsoft.com/hybridcloudbp/2017/06/05/identity-and-rights-management-in-csp-model-part2/) in its "Implementation granular role based access control" section.
 
 
 * To verify: 
