@@ -6,7 +6,7 @@ This article will focus on how a CSP Direct partner can delegate administration 
 
 ```
 [ThoVuy]
-* I believe this article is only aimed at CSP direct. Right? Might need to use Herman's ppt to clarify what that is and which ones aren't the scope of this article.
+* Does this also apply to CSP indirect customers?
 ```
 
 * The CSP Direct partner has a separate AAD tenant for corporate and for CSP.
@@ -142,13 +142,7 @@ In this variant, the patner defines AAD groups inside its own tenant with the us
 
 Due to the fact that the groups are separately maintained for each tenant (partner and customers), there needs to be some automation in place to check group membership periodically and keep/remove the user in the customer tenants. The group and role synchronization mechanism is explained in more detail in [this article](https://blogs.technet.microsoft.com/hybridcloudbp/2017/06/05/identity-and-rights-management-in-csp-model-part2/) in its "Implementation granular role based access control" section.
 
-
-* To verify: 
-- RI doesn't work with B2B invite: confirmed
-- Support blade?
-
-
-
 Additional reading:
 
 * [Identity and Rights Management in CSP model](https://blogs.technet.microsoft.com/hybridcloudbp/2016/06/08/identity-and-rights-management-in-csp-model/)
+* [Identity and Rights Management in CSP model – Part 2](https://blogs.technet.microsoft.com/hybridcloudbp/2017/06/05/identity-and-rights-management-in-csp-model-part2/)
