@@ -4,11 +4,6 @@
 
 This article will focus on how a CSP Direct partner can delegate administration across its customers. First we will provide an overview of the AAD tenants that play a part in this story. There are two common setups commonly faced:
 
-```
-[ThoVuy]
-* Does this also apply to CSP indirect customers?
-```
-
 * The CSP Direct partner has a separate AAD tenant for corporate and for CSP.
 
 ![Separate AAD](media/csp-separate-aad.png)
